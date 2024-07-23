@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, RegisterSchema } from "@/lib/schemas/registerSchema";
 import { PiHandWavingDuotone } from "react-icons/pi";
+import { registerUser } from "@/app/actions/authActions";
 
 
 const RegisterForm = () => {
@@ -13,8 +14,9 @@ const RegisterForm = () => {
         mode: 'onTouched'
     });
 
-    const onSubmit = (data:RegisterSchema) => {
-        console.log(data)
+    const onSubmit = async (data:RegisterSchema) => {
+        const result = await registerUser(data)
+        console.log(result)
     }
 
     return (
