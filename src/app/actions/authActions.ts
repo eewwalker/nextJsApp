@@ -1,5 +1,4 @@
 'use server';
-
 import { signIn } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
@@ -8,24 +7,28 @@ import { ActionResult } from "@/types";
 import { User } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 import { AuthError } from "next-auth";
-import { redirect } from "next/dist/server/api-utils";
 
-
+//nextauth returns a session token as a cookie rather than a User
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>>{
   try {
+
+    //signIn(provider, {})
     const result = await signIn('credentials', {
       email: data.email,
       password: data.password,
       redirect: false
     })
-    console.log(result)
     return {status: 'success', data: 'Logged In'}
   } catch (error) {
     console.log(error)
+    //nextAuth provides specific types of errors
     if(error instanceof AuthError) {
+
       switch(error.type) {
         case 'CredentialsSignin':
           return {status: 'error', error: 'Invalid Credentials'}
+        case 'CallbackRouteError':
+            return {status: 'error', error: 'Invalid Credentials'}
           default:
             return {status: 'error', error: 'Something went wrong'}
       }
@@ -74,6 +77,7 @@ export async function registerUser(data: RegisterSchema):Promise<ActionResult<Us
 }
 
 export async function getUserByEmail(email:string) {
+  console.log('email', email)
   return prisma.user.findUnique({where: {email}});
 
 }
