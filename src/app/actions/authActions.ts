@@ -1,5 +1,5 @@
 'use server';
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
 import { registerSchema, RegisterSchema } from "@/lib/schemas/registerSchema";
@@ -8,6 +8,10 @@ import { User } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 import { AuthError } from "next-auth";
 
+
+export async function signOutUser() {
+  await signOut({redirectTo: '/'});
+}
 //nextauth returns a session token as a cookie rather than a User
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>>{
   try {

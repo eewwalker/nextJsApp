@@ -1,5 +1,5 @@
 'use client';
-import { signOut } from "@/auth";
+import { signOutUser } from "@/app/actions/authActions";
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@nextui-org/react";
 import { Session } from "next-auth";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export default function UserMenu({user}:Props) {
                     className="secondary"
                     name={user?.name || 'user avatar'}
                     size="sm"
-                    src={user?.image || '/images/user/png'}/>
+                    src={user?.image || '/images/user.png'}/>
             </DropdownTrigger>
             <DropdownMenu variant='flat' aria-label='User actions menu'>
                 <DropdownSection showDivider>
@@ -29,7 +29,7 @@ export default function UserMenu({user}:Props) {
                 <DropdownItem as={Link} href="/members/edit">
                     Edit Profile
                 </DropdownItem>
-                <DropdownItem color="danger" onClick={async()=> signOut()}>
+                <DropdownItem color="danger" onClick={async()=> signOutUser()}>
                     Log Out
                 </DropdownItem>
             </DropdownMenu>
