@@ -20,6 +20,7 @@ const LoginForm = () => {
         const resp = await signInUser(data);
         if (resp.status === 'success') {
             router.push('/members');
+            router.refresh();
         }else {
             toast.error(resp.error as string)
         }
