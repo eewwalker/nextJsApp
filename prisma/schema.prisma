@@ -48,4 +48,36 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  member    Member?
+}
+  // dateOfBirth DateTimeƒ
+
+model Member {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  name        String
+  // gender String
+  created     DateTime @default(now())
+  updated     DateTime @default(now())
+  description String
+  city        String
+  // country String
+  image       String?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipes     Recipe[]
+}
+
+model Recipe {
+  id      String   @id @default(cuid())
+  title   String
+  content String
+  created DateTime @default(now())
+  updated DateTime @default(now())
+  image   String
+  //url String
+  //publicId String? maybe for cloud storage
+  // likes Int
+  // comments Int
+  memberId String
+  member Member @relation(fields:[memberId], references: [id], onDelete: Cascade)
 }
